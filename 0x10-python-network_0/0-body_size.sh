@@ -1,20 +1,3 @@
 #!/bin/bash
-
-# Check if URL argument is provided
-if [ $# -eq 0 ]; then
-  echo "Usage: $0 <URL>"
-  exit 1
-fi
-
-# Get URL from command line argument
-URL=$1
-
-# Send a request to the URL using curl and store the response body in a variable
-response=$(curl -sS "$URL")
-
-# Calculate the size of the response body in bytes
-size=$(echo -n "$response" | wc -c)
-
-# Display the size of the response body
-echo "Size of the response body: $size bytes"
-
+#a Bash script that takes in a URL, sends a request to that URL, and displays the size of the body of the response
+curl -s -o /dev/null  -w "%{size_download}\n" $1
