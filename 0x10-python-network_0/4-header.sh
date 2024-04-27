@@ -1,16 +1,3 @@
 #!/bin/bash
-
-# Check if URL argument is provided
-if [ $# -eq 0 ]; then
-    echo "Usage: $0 <URL>"
-    exit 1
-fi
-
-URL=$1
-
-# Send GET request with custom header using curl
-RESPONSE=$(curl -s -H "X-School-User-Id: 98" "$URL")
-
-# Display the body of the response
-echo "Response Body:"
-echo "$RESPONSE"
+# script that takes in a URL as an argument, sends a GET request to the URL, and displays the body of the response
+curl -s "$1" -H "X-School-User-Id: 98"
