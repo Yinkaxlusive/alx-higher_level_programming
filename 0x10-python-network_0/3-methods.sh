@@ -1,16 +1,5 @@
 #!/bin/bash
+# This script takes a URL as an argument and displays all HTTP methods the server will accept.
+# It uses curl with the -s (silent) option to fetch the allowed methods from the server.
 
-# Check if URL argument is provided
-if [ $# -eq 0 ]; then
-    echo "Usage: $0 <URL>"
-    exit 1
-fi
-
-URL=$1
-
-# Send OPTIONS request using curl to get allowed methods
-METHODS=$(curl -s -i -X OPTIONS "$URL" | grep 'Allow:' | sed 's/Allow: //')
-
-# Display the allowed methods
-echo "Allowed HTTP Methods for $URL:"
-echo "$METHODS"
+curl -sI "$1" | grep "Allow:" | sed 's/Allow: //' | tr ',' '\n'
