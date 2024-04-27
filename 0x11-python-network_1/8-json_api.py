@@ -1,23 +1,32 @@
 #!/usr/bin/python3
 """
-Python script that takes in a letter and sends a POST request to
+script that takes in a letter and sends a POST request to
 http://0.0.0.0:5000/search_user with the letter as a parameter.
-Displays the id and name from the JSON response if valid, otherwise
-prints appropriate messages.
-Uses the requests and sys packages.
+The letter must be sent in the variable q.
+If no argument is given, set q="".
+If the response body is properly JSON formatted and not empty, display the
+id and name like this: [<id>] <name>, Otherwise: Display Not a valid JSON
+if the JSON is invalid and Display No result if the JSON is empty
 """
-import requests
 import sys
+import requests
+
 
 if __name__ == "__main__":
     url = "http://0.0.0.0:5000/search_user"
-    letter = sys.argv[1] if len(sys.argv) > 1 else ""
-    response = requests.post(url, data={"q": letter})
+    if len(sys.argv) > 1:
+        q = sys.argv[1]
+    else:
+        q = ""
+    payload = {"q": q}
+    response = requests.post(url, data=payload)
     try:
-        json_data = response.json()
-        if json_data:
-            print("[{}] {}".format(json_data["id"], json_data["name"]))
-        else:
+        json_outp = response.json()
+        if not json_outp:
             print("No result")
-    except ValueError:
+        else:
+            my_id = json_outp.get("id")
+            my_name = json_outp.get("name")
+            print("[{}] {}".format(my_id, my_name))
+    except ValueError as invalid_json:
         print("Not a valid JSON")
