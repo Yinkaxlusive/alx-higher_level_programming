@@ -10,7 +10,7 @@ fi
 URL=$1
 
 # Send a request to the URL using curl and store the response body in a variable
-response=$(curl -sS "$URL")
+response=$(curl -s -o /dev/null  -w "%{size_download}\n" $1)
 
 # Check if curl encountered an error
 if [ $? -ne 0 ]; then
@@ -22,4 +22,11 @@ fi
 size=$(echo -n "$response" | wc -c)
 
 # Display the size of the response body
-echo "Size of the response body: $size bytes"
+echo $size
+
+
+
+#!/bin/bash
+# a Bash script that takes in a URL, sends a request to that URL, and displays the size of the body of the response
+# curl -s -o /dev/null  -w "%{size_download}\n" $1
+
