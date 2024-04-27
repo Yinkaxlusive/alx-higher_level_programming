@@ -17,4 +17,6 @@ def get_request_id(url):
 
 if __name__ == "__main__":
     url = sys.argv[1]
-    get_request_id(url)
+
+    r = requests.get(url)
+    print(r.headers.get("X-Request-Id"))
