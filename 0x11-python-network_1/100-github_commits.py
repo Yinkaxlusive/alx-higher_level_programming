@@ -1,24 +1,28 @@
 #!/usr/bin/python3
 """
-Python script that takes repository name and owner name as arguments
-and lists 10 most recent commits from the repository by the owner
-using the GitHub API.
-Uses the requests and sys packages.
+script that takes 2 arguments in order to list 10 commits (from the most
+recent to oldest) of the repository "rails" by the user "rails".
+Print all commits by: `<sha>: <author name>` (one by line)
+The first argument will be the repository name
+The second argument will be the owner name
 """
-import requests
 import sys
+import requests
+
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: {} <repo> <owner>".format(sys.argv[0]))
-        sys.exit(1)
-
-    repo_name = sys.argv[1]
-    owner_name = sys.argv[2]
-    url = "https://api.github.com/repos/{}/{}/commits".format(owner_name, repo_name)
-    response = requests.get(url)
-    commits = response.json()
-    for commit in commits[:10]:
-        sha = commit["sha"]
-        author_name = commit["commit"]["author"]["name"]
-        print("{}: {}".format(sha, author_name))
+    try:
+        repo_name = sys.argv[1]
+        username = sys.argv[2]
+        commmits_url = "https://api.github.com/repos/{}/{}/commits" \
+            .format(username, repo_name)
+        response = requests.get(commmits_url)
+        json_obj = response.json()
+        for i, obj in enumerate(json_obj):
+            if i == 10:
+                break
+            if type(obj) is dict:
+                name = obj.get('commit').get('author').get('name')
+                print("{}: {}".format(obj.get('sha'), name))
+    except ValueError as invalid_json:
+        pass
