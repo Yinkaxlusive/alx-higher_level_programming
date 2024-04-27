@@ -1,12 +1,3 @@
-#!/bin/bash
-
-# Check if URL argument is provided
-if [ $# -eq 0 ]; then
-    echo "Usage: $0 <URL>"
-    exit 1
-fi
-
-URL=$1
-
-# Send request using curl and display status code only
-curl -s -o /dev/null -w "%{http_code}" "$URL"
+#!/bin/bash 
+# script that sends a request to a URL passed as an argument, and displays only the status code of the response.
+curl -s -L -X HEAD -w "%{http_code}" "$1"
