@@ -1,9 +1,13 @@
 #!/usr/bin/node
 
+// Import the 'request' module.
 const request = require('request');
-const starWarsUri = 'https://swapi-api.hbtn.io/api/films/'.concat(process.argv[2]);
 
-request(starWarsUri, function (_err, _res, body) {
-  body = JSON.parse(body);
-  console.log(body.title);
+// Construct the URL for the specific Star Wars film
+const url = 'https://swapi-api.alx-tools.com/api/films/' + process.argv[2];
+
+// Use the 'request' module to perform an HTTP GET request to the constructed URL.
+request(url, function (error, response, body) {
+  // log title if successful, log error if not.
+  console.log(error || JSON.parse(body).title);
 });
