@@ -1,24 +1,23 @@
 #!/usr/bin/node
 
+// Import the 'request' module
 const request = require('request');
-const starWarsUri = process.argv[2];
-let times = 0;
 
-request(starWarsUri, function (_err, _res, body) {
-  body = JSON.parse(body).results;
-
-  for (let i = 0; i < body.length; ++i) {
-    const characters = body[i].characters;
-
-    for (let j = 0; j < characters.length; ++j) {
-      const character = characters[j];
-      const characterId = character.split('/')[5];
-
-      if (characterId === '18') {
-        times += 1;
-      }
-    }
+// Use the 'request' module to perform an HTTP GET request to the URL
+request(process.argv[2], function (error, response, body) {
+  // Check if there was no error during the HTTP request.
+  if (!error) {
+    // parse the JSON data and extract the "results" array
+    const results = JSON.parse(body).results;
+    // Use the 'reduce()' method to iterate through the movies in the 'results' array.
+    console.log(results.reduce((count, movie) => {
+      // check if there is a character with ID 18 ('/18/') in the 'characters' array.
+      return movie.characters.find((character) => character.endsWith('/18/'))
+        // If a character with ID 18 is found, increment the count by 1.
+        ? count + 1
+        // Otherwise, keep the count unchanged.
+        : count;
+      // The 'reduce()' method starts with an initial value of 0 ('0' at the end).
+    }, 0));
   }
-
-  console.log(times);
 });
